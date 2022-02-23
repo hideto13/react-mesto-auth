@@ -15,7 +15,7 @@ import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-  const [loggedIn, setLoggedIn] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
@@ -124,21 +124,19 @@ function App() {
       <Switch>
         <Route path="/sign-up">
           <div className="page__container">
-            <Header />
+            <Header loggedIn={loggedIn} />
             <Register />
-            <Footer />
           </div>
         </Route>
         <Route path="/sign-in">
           <div className="page__container">
-            <Header />
+            <Header loggedIn={loggedIn} />
             <Login />
-            <Footer />
           </div>
         </Route>
         <ProtectedRoute path="/" exact loggedIn={loggedIn}>
           <div className="page__container">
-            <Header />
+            <Header loggedIn={loggedIn} />
             <Main
               handleAddPlaceClick={handleAddPlaceClick}
               handleEditAvatarClick={handleEditAvatarClick}

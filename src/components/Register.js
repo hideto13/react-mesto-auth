@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Register() {
   return (
     <div className="form__container">
@@ -40,6 +42,9 @@ function Register() {
           Зарегистрироваться
         </button>
       </form>
+      <Link to="/sign-in" className="form__link">
+        Уже зарегистрированы? Войти
+      </Link>
     </div>
   );
 }
