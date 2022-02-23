@@ -14,7 +14,7 @@ function Login({
   const emailInputRef = React.useRef();
   const passwordInputRef = React.useRef();
 
-  function handleSubmit(e) {
+  function onLogin(e) {
     e.preventDefault();
     authorize({
       email: emailInputRef.current.value,
@@ -38,7 +38,7 @@ function Login({
   return (
     <div className="form__container">
       <h2 className="form__title">Вход</h2>
-      <form className="popup__form" onSubmit={handleSubmit}>
+      <form className="popup__form" onSubmit={onLogin}>
         <input
           className="popup__input  popup__input_theme_dark"
           name="name"

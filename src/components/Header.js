@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import logo from "../images/logo.svg";
 
-function Header({ loggedIn, handleLoggedOut, currentEmail }) {
+function Header({ loggedIn, onSignOut, currentEmail }) {
   const location = useLocation();
   return (
     <header className="header">
@@ -10,7 +10,7 @@ function Header({ loggedIn, handleLoggedOut, currentEmail }) {
         {loggedIn ? (
           <>
             <p className="header__email">{currentEmail}</p>
-            <button className="header__button" onClick={handleLoggedOut}>
+            <button className="header__button" onClick={onSignOut}>
               Выйти
             </button>
           </>

@@ -8,7 +8,7 @@ function Register({ onClose, infoPopupOpen, handleInfoPopup }) {
   const emailInputRef = React.useRef();
   const passwordInputRef = React.useRef();
 
-  function handleSubmit(e) {
+  function onRegister(e) {
     e.preventDefault();
 
     register({
@@ -35,7 +35,7 @@ function Register({ onClose, infoPopupOpen, handleInfoPopup }) {
   return (
     <div className="form__container">
       <h2 className="form__title">Регистрация</h2>
-      <form className="popup__form" onSubmit={handleSubmit}>
+      <form className="popup__form" onSubmit={onRegister}>
         <input
           className="popup__input  popup__input_theme_dark"
           name="name"

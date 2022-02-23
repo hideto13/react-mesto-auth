@@ -65,7 +65,7 @@ function App() {
     setSelectedCard(card);
   }
 
-  function handleLoggedOut() {
+  function onSignOut() {
     setLoggedIn(false);
   }
 
@@ -178,7 +178,7 @@ function App() {
           <div className="page__container">
             <Header
               loggedIn={loggedIn}
-              handleLoggedOut={handleLoggedOut}
+              onSignOut={onSignOut}
               currentEmail={currentEmail}
             />
             <Main
