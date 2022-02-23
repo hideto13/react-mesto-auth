@@ -8,6 +8,8 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
+import Login from "./Login";
+import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -121,10 +123,18 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <Switch>
         <Route path="/sign-up">
-          <div className="page__container"> Register</div>
+          <div className="page__container">
+            <Header />
+            <Register />
+            <Footer />
+          </div>
         </Route>
         <Route path="/sign-in">
-          <div className="page__container">Autorize</div>
+          <div className="page__container">
+            <Header />
+            <Login />
+            <Footer />
+          </div>
         </Route>
         <ProtectedRoute path="/" exact loggedIn={loggedIn}>
           <div className="page__container">
