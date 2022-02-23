@@ -1,11 +1,46 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import InfoTooltip from "./InfoTooltip";
+import { register } from "../utils/authApi";
 
 function Register() {
+  const [success, setSuccess] = React.useState(false);
+  const [infoPopupOpen, setInfoPopupOpen] = React.useState(false);
+  const emailInputRef = React.useRef();
+  const passwordInputRef = React.useRef();
+
+  function closeInfoPopup() {
+    setInfoPopupOpen(false);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    register({
+      email: emailInputRef.current.value,
+      password: passwordInputRef.current.value,
+    })
+      .then((res) => {
+        if (res.statusCode !== 400) {
+          setSuccess(true);
+          setInfoPopupOpen(true);
+        }
+      })
+      .catch(() => {
+        setSuccess(false);
+        setInfoPopupOpen(true);
+      });
+  }
+
+  React.useEffect(() => {
+    emailInputRef.current.value = "";
+    passwordInputRef.current.value = "";
+  }, []);
+
   return (
     <div className="form__container">
       <h2 className="form__title">Регистрация</h2>
-      <form className="popup__form">
+      <form className="popup__form" onSubmit={handleSubmit}>
         <input
           className="popup__input  popup__input_theme_dark"
           name="name"
@@ -14,8 +49,9 @@ function Register() {
           placeholder="Email"
           required
           minLength="2"
-          maxLength="40"
+          maxLength="50"
           autoComplete="off"
+          ref={emailInputRef}
         />
         <span
           id="name-error"
@@ -29,8 +65,9 @@ function Register() {
           placeholder="Пароль"
           required
           minLength="2"
-          maxLength="200"
+          maxLength="50"
           autoComplete="off"
+          ref={passwordInputRef}
         />
         <span
           id="text-error"
@@ -46,7 +83,11 @@ function Register() {
       <Link to="/sign-in" className="form__link">
         Уже зарегистрированы? Войти
       </Link>
-      <InfoTooltip isOpen={false} success={true} />
+      <InfoTooltip
+        isOpen={infoPopupOpen}
+        success={success}
+        onClose={closeInfoPopup}
+      />
     </div>
   );
 }
