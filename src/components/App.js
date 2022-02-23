@@ -27,6 +27,7 @@ function App() {
     link: "",
   });
   const [currentUser, setCurrentUser] = React.useState({});
+  const [currentEmail, setCurrentEmail] = React.useState("");
   const [cards, setCards] = React.useState([]);
 
   function handleEditAvatarClick() {
@@ -150,12 +151,17 @@ function App() {
               onClose={closeAllPopups}
               infoPopupOpen={infoPopupOpen}
               handleInfoPopup={handleInfoPopup}
+              setCurrentEmail={setCurrentEmail}
             />
           </div>
         </Route>
         <ProtectedRoute path="/" exact loggedIn={loggedIn}>
           <div className="page__container">
-            <Header loggedIn={loggedIn} handleLoggedOut={handleLoggedOut} />
+            <Header
+              loggedIn={loggedIn}
+              handleLoggedOut={handleLoggedOut}
+              currentEmail={currentEmail}
+            />
             <Main
               handleAddPlaceClick={handleAddPlaceClick}
               handleEditAvatarClick={handleEditAvatarClick}

@@ -3,7 +3,13 @@ import { useHistory } from "react-router-dom";
 import InfoTooltip from "./InfoTooltip";
 import { authorize } from "../utils/authApi";
 
-function Login({ setLoggedIn, onClose, handleInfoPopup, infoPopupOpen }) {
+function Login({
+  setLoggedIn,
+  onClose,
+  handleInfoPopup,
+  infoPopupOpen,
+  setCurrentEmail,
+}) {
   const history = useHistory();
   const emailInputRef = React.useRef();
   const passwordInputRef = React.useRef();
@@ -18,6 +24,7 @@ function Login({ setLoggedIn, onClose, handleInfoPopup, infoPopupOpen }) {
         if (data.token) {
           localStorage.setItem("jwt", data.token);
           setLoggedIn(true);
+          setCurrentEmail(emailInputRef.current.value);
           history.push("/");
         } else {
           handleInfoPopup();
