@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import InfoTooltip from "./InfoTooltip";
 
 function Register() {
   return (
@@ -45,6 +46,7 @@ function Register() {
       <Link to="/sign-in" className="form__link">
         Уже зарегистрированы? Войти
       </Link>
+      <InfoTooltip isOpen={false} success={true} />
     </div>
   );
 }
