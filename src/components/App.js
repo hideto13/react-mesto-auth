@@ -21,6 +21,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
+  const [infoPopupOpen, setInfoPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({
     name: "",
     link: "",
@@ -40,8 +41,16 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
+  function handleInfoPopup() {
+    setInfoPopupOpen(true);
+  }
+
   function handleCardClick(card) {
     setSelectedCard(card);
+  }
+
+  function handleLoggedOut() {
+    setLoggedIn(false);
   }
 
   function closeAllPopups() {
@@ -49,6 +58,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({ name: "", link: "" });
+    setInfoPopupOpen(false);
   }
 
   function handleUpdateUser(user) {
@@ -125,18 +135,27 @@ function App() {
         <Route path="/sign-up">
           <div className="page__container">
             <Header loggedIn={loggedIn} />
-            <Register />
+            <Register
+              onClose={closeAllPopups}
+              infoPopupOpen={infoPopupOpen}
+              handleInfoPopup={handleInfoPopup}
+            />
           </div>
         </Route>
         <Route path="/sign-in">
           <div className="page__container">
             <Header loggedIn={loggedIn} />
-            <Login />
+            <Login
+              setLoggedIn={setLoggedIn}
+              onClose={closeAllPopups}
+              infoPopupOpen={infoPopupOpen}
+              handleInfoPopup={handleInfoPopup}
+            />
           </div>
         </Route>
         <ProtectedRoute path="/" exact loggedIn={loggedIn}>
           <div className="page__container">
-            <Header loggedIn={loggedIn} />
+            <Header loggedIn={loggedIn} handleLoggedOut={handleLoggedOut} />
             <Main
               handleAddPlaceClick={handleAddPlaceClick}
               handleEditAvatarClick={handleEditAvatarClick}

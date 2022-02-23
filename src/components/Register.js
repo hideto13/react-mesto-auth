@@ -3,15 +3,10 @@ import { Link } from "react-router-dom";
 import InfoTooltip from "./InfoTooltip";
 import { register } from "../utils/authApi";
 
-function Register() {
+function Register({ onClose, infoPopupOpen, handleInfoPopup }) {
   const [success, setSuccess] = React.useState(false);
-  const [infoPopupOpen, setInfoPopupOpen] = React.useState(false);
   const emailInputRef = React.useRef();
   const passwordInputRef = React.useRef();
-
-  function closeInfoPopup() {
-    setInfoPopupOpen(false);
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -23,12 +18,12 @@ function Register() {
       .then((res) => {
         if (res.statusCode !== 400) {
           setSuccess(true);
-          setInfoPopupOpen(true);
+          handleInfoPopup();
         }
       })
       .catch(() => {
         setSuccess(false);
-        setInfoPopupOpen(true);
+        handleInfoPopup();
       });
   }
 
@@ -83,11 +78,7 @@ function Register() {
       <Link to="/sign-in" className="form__link">
         Уже зарегистрированы? Войти
       </Link>
-      <InfoTooltip
-        isOpen={infoPopupOpen}
-        success={success}
-        onClose={closeInfoPopup}
-      />
+      <InfoTooltip isOpen={infoPopupOpen} success={success} onClose={onClose} />
     </div>
   );
 }

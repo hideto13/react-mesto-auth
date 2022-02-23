@@ -1,8 +1,37 @@
-function Login() {
+import React from "react";
+import { useHistory } from "react-router-dom";
+import InfoTooltip from "./InfoTooltip";
+import { authorize } from "../utils/authApi";
+
+function Login({ setLoggedIn, onClose, handleInfoPopup, infoPopupOpen }) {
+  const history = useHistory();
+  const emailInputRef = React.useRef();
+  const passwordInputRef = React.useRef();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    authorize({
+      email: emailInputRef.current.value,
+      password: passwordInputRef.current.value,
+    })
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem("jwt", data.token);
+          setLoggedIn(true);
+          history.push("/");
+        } else {
+          handleInfoPopup();
+        }
+      })
+      .catch(() => {
+        handleInfoPopup();
+      });
+  }
+
   return (
     <div className="form__container">
       <h2 className="form__title">Вход</h2>
-      <form className="popup__form">
+      <form className="popup__form" onSubmit={handleSubmit}>
         <input
           className="popup__input  popup__input_theme_dark"
           name="name"
@@ -11,8 +40,9 @@ function Login() {
           placeholder="Email"
           required
           minLength="2"
-          maxLength="40"
+          maxLength="50"
           autoComplete="off"
+          ref={emailInputRef}
         />
         <span
           id="name-error"
@@ -26,8 +56,9 @@ function Login() {
           placeholder="Пароль"
           required
           minLength="2"
-          maxLength="200"
+          maxLength="50"
           autoComplete="off"
+          ref={passwordInputRef}
         />
         <span
           id="text-error"
@@ -40,6 +71,7 @@ function Login() {
           Войти
         </button>
       </form>
+      <InfoTooltip isOpen={infoPopupOpen} success={false} onClose={onClose} />
     </div>
   );
 }
