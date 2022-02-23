@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -12,9 +12,11 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import { api } from "../utils/api";
+import { checkToken } from "../utils/authApi";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
+  const history = useHistory();
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
@@ -29,6 +31,19 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentEmail, setCurrentEmail] = React.useState("");
   const [cards, setCards] = React.useState([]);
+
+  function handleTokenCheck() {
+    if (localStorage.getItem("jwt")) {
+      const jwt = localStorage.getItem("jwt");
+      checkToken(jwt).then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          setCurrentEmail(res.data.email);
+          history.push("/");
+        }
+      });
+    }
+  }
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -128,6 +143,10 @@ function App() {
         setCurrentUser(user);
       })
       .catch((err) => console.log(err));
+  }, []);
+
+  React.useEffect(() => {
+    handleTokenCheck();
   }, []);
 
   return (
