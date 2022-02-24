@@ -1,14 +1,22 @@
 import React from "react";
 
 function Login({ onLogin }) {
-  const emailInputRef = React.useRef();
-  const passwordInputRef = React.useRef();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
     onLogin({
-      email: emailInputRef.current.value,
-      password: passwordInputRef.current.value,
+      email,
+      password,
     });
   }
 
@@ -26,7 +34,8 @@ function Login({ onLogin }) {
           minLength="2"
           maxLength="50"
           autoComplete="off"
-          ref={emailInputRef}
+          onChange={handleEmailChange}
+          value={email || ""}
         />
         <span
           id="name-error"
@@ -42,7 +51,8 @@ function Login({ onLogin }) {
           minLength="2"
           maxLength="50"
           autoComplete="off"
-          ref={passwordInputRef}
+          onChange={handlePasswordChange}
+          value={password || ""}
         />
         <span
           id="text-error"

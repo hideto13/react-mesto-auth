@@ -57,11 +57,12 @@ function App() {
       .then((res) => {
         if (res.statusCode !== 400) {
           setSuccess(true);
-          handleInfoPopup();
         }
       })
       .catch(() => {
         setSuccess(false);
+      })
+      .finally(() => {
         handleInfoPopup();
       });
   }

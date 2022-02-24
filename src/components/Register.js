@@ -2,21 +2,29 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Register({ onRegister }) {
-  const emailInputRef = React.useRef();
-  const passwordInputRef = React.useRef();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
 
     onRegister({
-      email: emailInputRef.current.value,
-      password: passwordInputRef.current.value,
+      email,
+      password,
     });
   }
 
   React.useEffect(() => {
-    emailInputRef.current.value = "";
-    passwordInputRef.current.value = "";
+    setEmail("");
+    setPassword("");
   }, []);
 
   return (
@@ -33,7 +41,8 @@ function Register({ onRegister }) {
           minLength="2"
           maxLength="50"
           autoComplete="off"
-          ref={emailInputRef}
+          onChange={handleEmailChange}
+          value={email || ""}
         />
         <span
           id="name-error"
@@ -49,7 +58,8 @@ function Register({ onRegister }) {
           minLength="2"
           maxLength="50"
           autoComplete="off"
-          ref={passwordInputRef}
+          onChange={handlePasswordChange}
+          value={password || ""}
         />
         <span
           id="text-error"
