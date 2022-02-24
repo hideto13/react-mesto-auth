@@ -12,7 +12,7 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import { api } from "../utils/api";
-import { checkToken } from "../utils/authApi";
+import { register, authorize, checkToken } from "../utils/authApi";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
@@ -31,18 +31,58 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentEmail, setCurrentEmail] = React.useState("");
   const [cards, setCards] = React.useState([]);
+  const [registerSuccess, setRegisterSuccess] = React.useState(false);
 
   function handleTokenCheck() {
     if (localStorage.getItem("jwt")) {
       const jwt = localStorage.getItem("jwt");
-      checkToken(jwt).then((res) => {
-        if (res) {
-          setLoggedIn(true);
-          setCurrentEmail(res.data.email);
-          history.push("/");
-        }
-      });
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setCurrentEmail(res.data.email);
+            history.push("/");
+          }
+        })
+        .catch((err) => console.log(err));
     }
+  }
+
+  function onRegister({ email, password }) {
+    register({
+      email,
+      password,
+    })
+      .then((res) => {
+        if (res.statusCode !== 400) {
+          setRegisterSuccess(true);
+          handleInfoPopup();
+        }
+      })
+      .catch(() => {
+        setRegisterSuccess(false);
+        handleInfoPopup();
+      });
+  }
+
+  function onLogin({ email, password }) {
+    authorize({
+      email,
+      password,
+    })
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem("jwt", data.token);
+          setLoggedIn(true);
+          setCurrentEmail(email);
+          history.push("/");
+        } else {
+          handleInfoPopup();
+        }
+      })
+      .catch(() => {
+        handleInfoPopup();
+      });
   }
 
   function handleEditAvatarClick() {
@@ -158,7 +198,8 @@ function App() {
             <Register
               onClose={closeAllPopups}
               infoPopupOpen={infoPopupOpen}
-              handleInfoPopup={handleInfoPopup}
+              onRegister={onRegister}
+              success={registerSuccess}
             />
           </div>
         </Route>
@@ -166,11 +207,9 @@ function App() {
           <div className="page__container">
             <Header loggedIn={loggedIn} />
             <Login
-              setLoggedIn={setLoggedIn}
               onClose={closeAllPopups}
               infoPopupOpen={infoPopupOpen}
-              handleInfoPopup={handleInfoPopup}
-              setCurrentEmail={setCurrentEmail}
+              onLogin={onLogin}
             />
           </div>
         </Route>

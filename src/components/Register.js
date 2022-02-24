@@ -1,30 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import InfoTooltip from "./InfoTooltip";
-import { register } from "../utils/authApi";
 
-function Register({ onClose, infoPopupOpen, handleInfoPopup }) {
-  const [success, setSuccess] = React.useState(false);
+function Register({ onClose, infoPopupOpen, onRegister, success }) {
   const emailInputRef = React.useRef();
   const passwordInputRef = React.useRef();
 
-  function onRegister(e) {
+  function handleSubmit(e) {
     e.preventDefault();
 
-    register({
+    onRegister({
       email: emailInputRef.current.value,
       password: passwordInputRef.current.value,
-    })
-      .then((res) => {
-        if (res.statusCode !== 400) {
-          setSuccess(true);
-          handleInfoPopup();
-        }
-      })
-      .catch(() => {
-        setSuccess(false);
-        handleInfoPopup();
-      });
+    });
   }
 
   React.useEffect(() => {
@@ -35,7 +23,7 @@ function Register({ onClose, infoPopupOpen, handleInfoPopup }) {
   return (
     <div className="form__container">
       <h2 className="form__title">Регистрация</h2>
-      <form className="popup__form" onSubmit={onRegister}>
+      <form className="popup__form" onSubmit={handleSubmit}>
         <input
           className="popup__input  popup__input_theme_dark"
           name="name"

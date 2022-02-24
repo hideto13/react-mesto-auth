@@ -1,44 +1,22 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import InfoTooltip from "./InfoTooltip";
-import { authorize } from "../utils/authApi";
 
-function Login({
-  setLoggedIn,
-  onClose,
-  handleInfoPopup,
-  infoPopupOpen,
-  setCurrentEmail,
-}) {
-  const history = useHistory();
+function Login({ onClose, infoPopupOpen, onLogin }) {
   const emailInputRef = React.useRef();
   const passwordInputRef = React.useRef();
 
-  function onLogin(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    authorize({
+    onLogin({
       email: emailInputRef.current.value,
       password: passwordInputRef.current.value,
-    })
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem("jwt", data.token);
-          setLoggedIn(true);
-          setCurrentEmail(emailInputRef.current.value);
-          history.push("/");
-        } else {
-          handleInfoPopup();
-        }
-      })
-      .catch(() => {
-        handleInfoPopup();
-      });
+    });
   }
 
   return (
     <div className="form__container">
       <h2 className="form__title">Вход</h2>
-      <form className="popup__form" onSubmit={onLogin}>
+      <form className="popup__form" onSubmit={handleSubmit}>
         <input
           className="popup__input  popup__input_theme_dark"
           name="name"
