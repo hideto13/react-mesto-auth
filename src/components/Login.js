@@ -1,7 +1,6 @@
 import React from "react";
-import InfoTooltip from "./InfoTooltip";
 
-function Login({ onClose, infoPopupOpen, onLogin }) {
+function Login({ onLogin }) {
   const emailInputRef = React.useRef();
   const passwordInputRef = React.useRef();
 
@@ -56,7 +55,6 @@ function Login({ onClose, infoPopupOpen, onLogin }) {
           Войти
         </button>
       </form>
-      <InfoTooltip isOpen={infoPopupOpen} success={false} onClose={onClose} />
     </div>
   );
 }

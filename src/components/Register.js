@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import InfoTooltip from "./InfoTooltip";
 
-function Register({ onClose, infoPopupOpen, onRegister, success }) {
+function Register({ onRegister }) {
   const emailInputRef = React.useRef();
   const passwordInputRef = React.useRef();
 
@@ -66,7 +65,6 @@ function Register({ onClose, infoPopupOpen, onRegister, success }) {
       <Link to="/sign-in" className="form__link">
         Уже зарегистрированы? Войти
       </Link>
-      <InfoTooltip isOpen={infoPopupOpen} success={success} onClose={onClose} />
     </div>
   );
 }

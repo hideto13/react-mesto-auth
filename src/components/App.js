@@ -10,6 +10,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import Login from "./Login";
 import Register from "./Register";
+import InfoTooltip from "./InfoTooltip";
 import ProtectedRoute from "./ProtectedRoute";
 import { api } from "../utils/api";
 import { register, authorize, checkToken } from "../utils/authApi";
@@ -31,7 +32,7 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentEmail, setCurrentEmail] = React.useState("");
   const [cards, setCards] = React.useState([]);
-  const [registerSuccess, setRegisterSuccess] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
 
   function handleTokenCheck() {
     if (localStorage.getItem("jwt")) {
@@ -55,12 +56,12 @@ function App() {
     })
       .then((res) => {
         if (res.statusCode !== 400) {
-          setRegisterSuccess(true);
+          setSuccess(true);
           handleInfoPopup();
         }
       })
       .catch(() => {
-        setRegisterSuccess(false);
+        setSuccess(false);
         handleInfoPopup();
       });
   }
@@ -77,10 +78,12 @@ function App() {
           setCurrentEmail(email);
           history.push("/");
         } else {
+          setSuccess(false);
           handleInfoPopup();
         }
       })
       .catch(() => {
+        setSuccess(false);
         handleInfoPopup();
       });
   }
@@ -195,22 +198,13 @@ function App() {
         <Route path="/sign-up">
           <div className="page__container">
             <Header loggedIn={loggedIn} />
-            <Register
-              onClose={closeAllPopups}
-              infoPopupOpen={infoPopupOpen}
-              onRegister={onRegister}
-              success={registerSuccess}
-            />
+            <Register onRegister={onRegister} />
           </div>
         </Route>
         <Route path="/sign-in">
           <div className="page__container">
             <Header loggedIn={loggedIn} />
-            <Login
-              onClose={closeAllPopups}
-              infoPopupOpen={infoPopupOpen}
-              onLogin={onLogin}
-            />
+            <Login onLogin={onLogin} />
           </div>
         </Route>
         <ProtectedRoute path="/" exact loggedIn={loggedIn}>
@@ -262,6 +256,11 @@ function App() {
           <Redirect to="/" />
         </Route>
       </Switch>
+      <InfoTooltip
+        isOpen={infoPopupOpen}
+        success={success}
+        onClose={closeAllPopups}
+      />
     </CurrentUserContext.Provider>
   );
 }
